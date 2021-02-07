@@ -1,0 +1,29 @@
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  /* min-width: 1000px; */
+  width: 100%;
+  height: 100%;
+}
+
+.el-breadcrumb {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.el-card {
+  box-shadow: 0 0.1px 0.1px rgba(0, 0, 0, 0.15) !important;
+  /* height: 500px; */
+}
+
+.el-table {
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.el-pagination {
+  margin-top: 15px;
+}
