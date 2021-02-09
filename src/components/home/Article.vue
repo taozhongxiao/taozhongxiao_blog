@@ -231,13 +231,13 @@ export default {
       }
     }
     .article {
-      width: 70%;
+      width: 65%;
       height: 633px;
       margin: 60px 0 0 0;
       padding: 92px 0 0 0;
       overflow-y: scroll;
       /deep/ .ql-editor {
-        margin-top: 70px;
+        margin-top: 60px;
         width: 100%;
         font-size: 16px;
         border: 0;
@@ -287,11 +287,11 @@ export default {
 
   footer {
     width: 100%;
-    margin-top: 55px;
+    margin-top: 35px;
     border-top: solid 1px #000000;
     padding: 0;
     > p {
-      padding: 20px 0;
+      padding: 15px 0;
       margin: 0;
       float: right;
       font-size: 14px;
@@ -301,7 +301,7 @@ export default {
       float: left;
       font-size: 14px;
       font-weight: bold;
-      margin: 20px 30px 15px 0;
+      margin: 15px 30px 15px 0;
       color: #000000;
       text-decoration: none;
     }

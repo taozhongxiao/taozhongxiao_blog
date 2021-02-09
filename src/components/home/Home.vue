@@ -3,7 +3,7 @@
     <!--页面header-->
     <header>
       <div>
-        taozhongxiao.
+        zào bái
       </div>
       <!--页面顶部导航区域-->
       <nav>
@@ -29,13 +29,23 @@
     <div class="main">
       <!--页面边栏-->
       <div class="aside">
-        <a v-bind:href="['http://localhost:8080/#/articles?id='+mainArticle.id]">
+        <a
+          v-bind:href="[
+            'http://localhost:8080/#/articles?id=' + mainArticle.id
+          ]"
+        >
           <div class="mainArticle" :style="isCollapse ? 'display: none' : ''">
             <span class="mainArticleTitle">{{ mainArticle.title }}</span>
-            <span class="mainArticleDigest"
-              >{{ mainArticle.digest }}</span
-            >
-            <img v-bind:src="['http://localhost:8888/'+mainArticle.imgsrc+'/fog-3622519_1920.jpg']" alt="" class="mainArticleImage" />
+            <span class="mainArticleDigest">{{ mainArticle.digest }}</span>
+            <img
+              v-bind:src="[
+                'http://localhost:8888/' +
+                  mainArticle.imgsrc +
+                  '/fog-3622519_1920.jpg'
+              ]"
+              alt=""
+              class="mainArticleImage"
+            />
           </div>
         </a>
 
@@ -110,18 +120,58 @@
       </div>
     </div>
 
+    <!-- collections-->
     <div class="mainMenuCollections">
-      <span>collections</span>
-      <div class="mainMenuCollectionContent">
-        <div><img src="../../assets/collection1.png" alt="" /></div>
-        <div><img src="../../assets/collection1.png" alt="" /></div>
-        <div><img src="../../assets/collection1.png" alt="" /></div>
+      <!--photography-->
+      <div class="mainMenuPhotography">
+        <div>
+          <img src="../../assets/1-edit.png" alt="" />
+          <a href="http://localhost:8080/collections?cate=photography">
+            <span>
+              Photography
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!--visual design-->
+      <div class="mainMenuDesign">
+        <div class="title">
+          <img src="../../assets/4-edit.png" alt="" />
+        </div>
+        <div class="digest">
+          2015年至今，我的海报、Powerpoint
+          设计产出，以及收藏的设计类文章与素材合辑
+        </div>
+        <div class="text">
+          <a href="http://localhost:8080/collections?cate=visual-design">
+            <span>Visual<br />Design</span>
+          </a>
+        </div>
+      </div>
+
+      <!--可视化-->
+      <div class="mainMenuData">
+        <div class="dataText">
+          <a href="http://localhost:8080/collections?cate=data-visualization">
+            <span>Data<br />Visualization</span>
+          </a>
+        </div>
+        <div class="dataDigest">
+          2019年至今，我使用 Python
+          完成的数据分析作业，以及在数据咨询公司的工作成果合辑
+        </div>
+        <div class="hollow">
+          <img src="../../assets/3-edit.png" alt="" />
+        </div>
       </div>
     </div>
 
     <div class="more">
-      <p>更多</p>
       <img src="../../assets/about.png" alt="" />
+      <a href="http://localhost:8080/more">
+        <span>About<br />更多</span>
+      </a>
     </div>
 
     <!--页面footer-->
@@ -141,14 +191,17 @@
         target="_blank"
         >kaggle</a
       >
-      <p>Hosted by taozhongxiao</p>
+      <a class="identity" href="http://beian.miit.gov.cn/" target="_blank"
+        >鄂ICP备2021002553号</a
+      >
+      <p>Hosted by <b>taozhongxiao</b></p>
     </footer>
   </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       isCollapse: '',
       mainQueryInfo: {
@@ -166,13 +219,15 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     this.getMainArticle()
     // this.getListArticle()
   },
   methods: {
-    async getMainArticle () {
-      const { data: res } = await this.$http.get('/main-article', { params: this.mainQueryInfo })
+    async getMainArticle() {
+      const { data: res } = await this.$http.get('/main-article', {
+        params: this.mainQueryInfo
+      })
       this.mainArticle.title = res.data.mainArticles[0].title
       this.mainArticle.digest = res.data.mainArticles[0].digest
       this.mainArticle.imgsrc = res.data.mainArticles[0].mainImg
@@ -180,7 +235,7 @@ export default {
       console.log('主文章成功')
       console.log(res)
     },
-    toggleCollapse () {
+    toggleCollapse() {
       this.isCollapse = !this.isCollapse
     }
   }
@@ -307,155 +362,335 @@ export default {
     }
   }
 
-  .mainArticle {
-    height: 553px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    .mainArticleTitle {
-      width: 70%;
-      display: block;
-      font-size: 32px;
-      font-weight: bold;
-      clear: both;
-    }
-    .mainArticleDigest {
-      display: block;
-      font-size: 18px;
-      width: 100%;
-    }
-    > img {
-      width: 100%;
-    }
-  }
-
-  .articleCateList {
-    overflow-y: scroll;
-    margin: 0;
-    height: 553px;
-    width: 100%;
-    ul {
-      margin: 0;
-      padding: 0;
-    }
-    li {
-      font-size: 40px;
-      font-weight: bold;
-      padding: 3px 0;
-      list-style: none;
-    }
-  }
-
-  .listArticle {
-    padding: 20px 0 20px 0;
-    height: 190px;
-    border-bottom: 1px solid #000000;
-    display: flex;
-    justify-content: space-between;
-    > img {
-      display: block;
-      margin: 0 0 0 30px;
-      // transform: translateY(-210px;);
-    }
-  }
-
-  .listArticleLetter {
-    width: 68%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    .listArticleCate {
-      display: block;
-      padding: 0;
-      font-size: 13px;
-      font-style: italic;
-      width: auto;
-    }
-    .listArticleTitle {
-      display: block;
-      font-weight: bold;
-      font-size: 24px;
-      padding: 0;
-      width: auto;
-    }
-    .listArticleDigest {
-      display: block;
-      font-size: 14px;
-      height: 62px;
-      width: auto;
-      margin: 0;
-      overflow: hidden;
-    }
-  }
-
   .mainMenuCollections {
     width: 100%;
     border-top: 1px solid #000000;
-    margin-top: 55px;
+    margin-top: 60px;
     > span {
       width: 100%;
       text-align: center;
-      padding: 30px 0;
+      padding: 50px 0;
       font-size: 20px;
       font-weight: bold;
       display: block;
       clear: both;
     }
-    .mainMenuCollectionContent {
+  }
+
+  .mainMenuPhotography {
+    width: 100%;
+    margin-bottom: 85px;
+    overflow: hidden;
+    div {
       width: 100%;
-      // height: 300px;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 55px;
-      > div {
-        display: block;
-        width: 30%;
-        > img {
-          width: 100%;
-          height: auto;
-        }
+      margin-top: 55px;
+      overflow: hidden;
+      height: auto;
+      position: relative;
+    }
+    section {
+      // position: relative;
+      // left: 65%;
+      // top: 80px;
+      span {
+        width: 20%;
       }
     }
-  }
-  .more {
-    border-top: 1px solid #000000;
-    margin-top: 55px;
-    > p {
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-      padding: 30px 0;
-      margin: 0;
-    }
-    > img {
+    img {
       width: 100%;
+      transition: all 0.6s;
+    }
+    span {
+      display: none;
+      font-size: 60px;
+      font-weight: bold;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    img:hover {
+      opacity: 0.3;
+      transform: scale(1.2);
+      transition: all 0.6s;
+    }
+    span:hover img {
+      opacity: 0.3;
+      transform: scale(1.2);
+      transition: all 0.6s;
+    }
+    div:hover span {
+      display: block;
     }
   }
 
-  footer {
+  .mainMenuDesign {
+    display: flex;
+    justify-content: space-between;
+    height: auto;
+    overflow: hidden;
     width: 100%;
-    margin-top: 55px;
-    border-top: solid 1px #000000;
-    padding: 0;
-    > p {
-      padding: 20px 0;
-      margin: 0;
-      float: right;
-      font-size: 14px;
+    position: relative;
+    min-height: 460px;
+    .title {
+      width: 53%;
+      height: 100%;
+      img {
+        width: 100%;
+        transition: all 0.3s;
+      }
     }
-    > a {
+    .text {
+      width: 22%;
+      margin-top: 27%;
+      transition: all 0.3s;
+      span {
+        display: block;
+        font-size: 60px;
+        font-weight: bold;
+        text-align: right;
+        transition: all 0.3s;
+      }
+    }
+    .digest {
+      font-size: 18px;
+      width: 22%;
+      height: 75px;
+      padding-bottom: 15px;
+      text-align: left;
+      margin-top: 22%;
+      transition: all 0.3s;
+      border: 0;
+    }
+  }
+  .mainMenuDesign:hover .text {
+    margin-top: 5%;
+    transition: all 0.2s linear 0s;
+  }
+  .mainMenuDesign:hover .digest {
+    // position: absolute;
+    // right: 0;
+    transform: translateX(100%);
+    border-bottom: 1px solid #000000;
+    padding-bottom: 15px;
+    transition: all 0.3s;
+    text-align: right;
+  }
+  .mainMenuDesign:hover img {
+    transform: scale(1.2);
+    transition: all 0.6s;
+  }
+
+  .mainMenuData {
+    display: flex;
+    justify-content: space-between;
+    height: auto;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    min-height: 460px;
+    margin-top: 85px;
+    transition: all 0.6s;
+  }
+  .dataText {
+    width: 15%;
+    transition: all 0.3s;
+    margin-top: 0%;
+    margin-top: 2.5%;
+    span {
       display: block;
-      float: left;
-      font-size: 14px;
+      font-size: 50px;
       font-weight: bold;
-      margin: 20px 30px 15px 0;
-      color: #000000;
-      text-decoration: none;
+      text-align: left;
+      transition: all 0.6s;
     }
-    > a:hover {
-      color: #808080;
+  }
+  .dataDigest {
+    font-size: 18px;
+    width: 22%;
+    text-align: left;
+    margin-top: 23%;
+    transition: all 0.6s;
+    padding-top: 15px;
+  }
+  .hollow {
+    // margin-top: 500px;
+    width: 60%;
+    height: 500px;
+    overflow: hidden;
+    // box-shadow: 0px 0px 0px 100px #ffffff;
+    img {
+      position: relative;
+      width: 1000px;
+      transform: translateX(0);
+      opacity: 0.8;
+      transition: all 0.6s;
+      // height: 500px #E3DFD2;
     }
+  }
+}
+.mainMenuData:hover img {
+  transform: translateX(-210px);
+  transition: all 0.6s;
+}
+.mainMenuData:hover .dataDigest {
+  transform: translateX(-75%);
+  transition: all 0.6s;
+  border-top: 1px solid #000000;
+}
+.mainMenuData:hover .dataText {
+  margin-top: 7.5%;
+  transition: all 0.3s;
+}
+
+.mainArticle {
+  height: 553px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .mainArticleTitle {
+    width: 70%;
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    clear: both;
+  }
+  .mainArticleDigest {
+    display: block;
+    font-size: 18px;
+    width: 100%;
+  }
+  > img {
+    width: 100%;
+  }
+}
+
+.articleCateList {
+  overflow-y: scroll;
+  margin: 0;
+  height: 553px;
+  width: 100%;
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    font-size: 40px;
+    font-weight: bold;
+    padding: 3px 0;
+    list-style: none;
+  }
+}
+
+.listArticle {
+  padding: 20px 0 20px 0;
+  height: 190px;
+  border-bottom: 1px solid #000000;
+  display: flex;
+  justify-content: space-between;
+  > img {
+    display: block;
+    margin: 0 0 0 30px;
+    // transform: translateY(-210px;);
+  }
+}
+
+.listArticleLetter {
+  width: 68%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  .listArticleCate {
+    display: block;
+    padding: 0;
+    font-size: 13px;
+    font-style: italic;
+    width: auto;
+  }
+  .listArticleTitle {
+    display: block;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 0;
+    width: auto;
+  }
+  .listArticleDigest {
+    display: block;
+    font-size: 14px;
+    height: 62px;
+    width: auto;
+    margin: 0;
+    overflow: hidden;
+  }
+}
+
+.more {
+  margin-top: 60px;
+  border-top: 1px solid #000000;
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  img {
+    width: 80%;
+    margin-top: 60px;
+    transition: all 0.6s;
+  }
+  a {
+    margin-top: 60px;
+    display: block;
+    span {
+      font-size: 60px;
+      font-weight: bold;
+      text-align: right;
+    }
+  }
+}
+.more:hover img {
+  width: 100%;
+  transition: all 0.6s;
+}
+.more:hover a {
+  color: #ffffff;
+  transform: translateX(-200px);
+  position: relative;
+}
+
+footer {
+  width: 100%;
+  margin-top: 55px;
+  border-top: solid 1px #000000;
+  padding: 0;
+  > p {
+    padding: 20px 0;
+    display: block;
+    float: right;
+    margin: 0;
+    font-size: 14px;
+  }
+  > a {
+    display: block;
+    font-size: 14px;
+    float: left;
+    font-weight: bold;
+    margin: 20px 30px 15px 0;
+    color: #000000;
+    text-decoration: none;
+  }
+  .identity {
+    position: absolute;
+    left: 50%;
+    font-weight: normal;
+    transform: translateX(-50%);
+  }
+  > div {
+    margin: 20px 0 15px 0;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  > a:hover {
+    color: #808080;
   }
 }
 

@@ -13,7 +13,7 @@ app.use('/uploads', express.static(__dirname + '/uploads'))
 // app.use(session({ secret: 'taozhongxiao111' }))
 app.use(cors({  
   origin:['http://localhost:8080'],
-  methods:['GET','POST','PUT'],
+  methods:['GET','POST','PUT','DELETE'],
   alloweHeaders:['Content-Type', 'Authorization']
 }))
 

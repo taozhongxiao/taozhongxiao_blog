@@ -2,7 +2,7 @@ const { Article } = require('../../model/article')
 
 module.exports = async (req, res, next) => {
   let pagesize = req.query.pagesize
-  let mainArticles = await Article.find({ featured: 'featured' })
+  let mainArticles = await Article.find({ featured: true })
     .limit(pagesize * 1)
   // 渲染用户列表模块
   // 将页面重定向到用户列表页面

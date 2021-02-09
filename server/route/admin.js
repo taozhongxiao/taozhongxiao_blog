@@ -42,4 +42,12 @@ admin.post('/article-upload', require('./admin/article-upload'))
 admin.post('/articleimg-delete', require('./admin/articleImg-delete'))
 admin.get('/articles', require('./admin/article-list'))
 
+admin.get('/articles-update', require('./admin/article-update'))
+admin.get('/articles-feature-update', require('./admin/article-feature-update'))
+
+admin.get('/cate', require('./admin/cate'))
+admin.post('/cate-add', require('./admin/cate-add'))
+admin.post('/cate-delete', require('./admin/cate-delete'))
+admin.delete('/article-delete', require('./admin/article-delete'))
+
 module.exports = admin

@@ -47,8 +47,8 @@ const userSchema = new mongoose.Schema({
   },
   featured: {
     // 非精选
-    default: 'normal',
-    type: String,
+    default: 0,
+    type: Boolean,
     required: true
   }
 })

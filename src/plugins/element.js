@@ -36,7 +36,9 @@ import {
   DropdownItem,
   DropdownMenu,
   Tooltip,
-  DatePicker
+  DatePicker,
+  Tag,
+  MessageBox
 } from 'element-ui'
 
 Vue.use(Container)
@@ -71,9 +73,11 @@ Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(Tooltip)
 Vue.use(DatePicker)
+Vue.use(Tag)
 
 Vue.use(VueQuillEditor)
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm
 
 // const CryptoJS = require('crypto-js') // 引用AES源码js
 

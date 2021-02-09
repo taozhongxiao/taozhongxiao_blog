@@ -2,7 +2,7 @@
   <div>
     <!-- 面包屑导航区域 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>内容发布</el-breadcrumb-item>
     </el-breadcrumb>
 
@@ -21,46 +21,47 @@
           <el-form-item label="摘要" prop="digest">
             <el-input v-model="addArticleForm.digest"></el-input>
           </el-form-item>
-          <el-form :inline="true" :model="addArticleForm" class="demo-form-inline">
+          <el-form
+            :inline="true"
+            :model="addArticleForm"
+            class="demo-form-inline"
+          >
             <!--class-->
             <el-form-item label="Class" prop="class">
-            <el-select
-              v-model="addArticleForm.class"
-              placeholder="请选择Class"
-            >
-              <el-option label="Article" value="article"></el-option>
-              <el-option
-                label="Collection"
-                value="collection"
-              ></el-option>
-            </el-select>
+              <el-select
+                v-model="addArticleForm.class"
+                placeholder="请选择Class"
+              >
+                <el-option label="Article" value="article"></el-option>
+                <el-option label="Collection" value="collection"></el-option>
+              </el-select>
             </el-form-item>
 
             <!-- cate -->
             <el-form-item label="分类" prop="cate">
-            <el-select
-              v-model="addArticleForm.cate"
-              placeholder="请选择分类"
-            >
-              <el-option label="JavaScript" value="JavaScript"></el-option>
-              <el-option
-                label="Computer Networks"
-                value="Computer Networks"
-              ></el-option>
-              <el-option label="HTML" value="HTML"></el-option>
-              <el-option label="杂文" value="essay"></el-option>
-              <el-option label="CSS" value="CSS"></el-option>
-            </el-select>
+              <el-select
+                v-model="addArticleForm.cate"
+                placeholder="请选择分类"
+                v-bind:disabled="addArticleForm.class ? false : true"
+              >
+                <el-option
+                  v-for="item in getCatelist"
+                  v-bind:label="item.cate"
+                  v-bind:value="item.cate"
+                  v-bind:key="item.cate"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-form>
           <el-form-item label="作者" prop="username">
             <el-input v-model="addArticleForm.username" disabled></el-input>
           </el-form-item>
-          <div class='datepicker'>
+          <div class="datepicker">
             <el-date-picker
               v-model="addArticleForm.date"
               type="date"
-              placeholder="选择日期">
+              placeholder="选择日期"
+            >
             </el-date-picker>
           </div>
         </el-form>
@@ -113,6 +114,8 @@ export default {
     return {
       // fileList: [{ name: '', url: '' }],
       fileList: [],
+      classList: [],
+      newClassList: '',
       uploadSuccessUrl: '',
       uploadSuccessFileName: '',
       content: '',
@@ -160,10 +163,42 @@ export default {
       }
     }
   },
-  created() {
+  created () {
+    this.geArticleDetail()
     this.getUserName()
+    this.getClassList()
   },
   methods: {
+    GetRequest() {
+      const url = window.location.hash // 获取url中"?"符后的字串Request = GetRequest()
+      const theRequest = []
+      if (url.indexOf('?') !== -1) {
+        const str = url.substr(24)
+        const strs = str.split('&')
+        for (let i = 0; i < strs.length; i++) {
+          theRequest[strs[i].split('=')[0]] = unescape(strs[i].split('=')[1])
+        }
+      }
+      return theRequest
+    },
+    async geArticleDetail() {
+      const id = this.GetRequest()
+      if (id.id) {
+        const { data: res } = await this.$http.get('admin/articles-update', { params: { aid: id.id } })
+        if (res.meta.status !== 200) {
+          return this.$message.error('获取文章列表失败！')
+        }
+        this.addArticleForm.username = res.data.Articles[0].username
+        this.addArticleForm.title = res.data.Articles[0].title
+        this.addArticleForm.digest = res.data.Articles[0].digest
+        this.addArticleForm.class = res.data.Articles[0].class
+        this.addArticleForm.cate = res.data.Articles[0].cate
+        this.addArticleForm.date = res.data.Articles[0].date
+        this.addArticleForm.mainImg = res.data.Articles[0].mainImg
+        this.content = res.data.Articles[0].content
+        console.log(res)
+      }
+    },
     getUserName() {
       this.addArticleForm.username = localStorage.getItem('username')
     },
@@ -204,18 +239,18 @@ export default {
       this.$message.success('图片上传成功！')
     },
     async upload() {
-      if (this.uploadSuccessUrl && this.content) {
+      if (this.addArticleForm.mainImg && this.content) {
         const { data: res } = await this.$http.post('/admin/article-upload', {
           username: this.addArticleForm.username,
-          class: this.addArticleForm.cate,
+          class: this.addArticleForm.class,
           cate: this.addArticleForm.cate,
           title: this.addArticleForm.title,
           digest: this.addArticleForm.digest,
           content: this.content,
-          mainImg: this.uploadSuccessUrl + this.uploadSuccessFileName,
+          mainImg: this.addArticleForm.mainImg ? this.addArticleForm.mainImg : this.uploadSuccessUrl + this.uploadSuccessFileName,
           date: this.addArticleForm.date,
           state: 1,
-          featured: 'normal'
+          featured: 0
         })
         if (res.meta.status !== 200) return this.$message.error('图片删除失败')
         this.$message.success('文章上传成功')
@@ -223,11 +258,23 @@ export default {
       } else {
         this.$message.error('请先完成文章！')
       }
+    },
+    async getClassList() {
+      const { data: res } = await this.$http.get('/admin/cate')
+      if (res.meta.status !== 200) return this.$message.error('分类获取失败')
+      this.classList = res.data.cates
+      console.log(this.classList)
     }
   },
   computed: {
     editor() {
       return this.$refs.myQuillEditor.quill
+    },
+    getCatelist() {
+      const newClassList = this.classList.filter(
+        item => item.class === this.addArticleForm.class
+      )
+      return newClassList
     }
   }
 }
