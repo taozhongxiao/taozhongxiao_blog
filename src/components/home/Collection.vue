@@ -26,60 +26,39 @@
     <!--页面主体容器-->
     <div class="main">
       <!--页面主体filter-->
-      <div class="collectionFilter">
-        <el-form :inline="true" class="demo-form-inline">
+      <div class="collectionFilter" v-bind:style="{ display: showFilter }">
+        <el-form :inline="true" :model="queryInfo" class="demo-form-inline">
           <el-form-item label="时间">
-            <el-select placeholder="false">
-              <el-option label="2020" value="shanghai"></el-option>
-              <el-option label="2019" value="beijing"></el-option>
+            <el-select v-model="queryInfo.time" placeholder="请选择">
+              <el-option label="2021" value="2021"></el-option>
+              <el-option label="2020" value="2020"></el-option>
+              <el-option label="2019" value="2019"></el-option>
+              <el-option label="2018" value="2018"></el-option>
+              <el-option label="2017" value="2017"></el-option>
+              <el-option label="2016" value="2016"></el-option>
+              <el-option label="2015" value="2015"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="分类">
-            <el-select>
-              <el-option
-                label="Data Visualization"
-                value="shanghai"
-              ></el-option>
-              <el-option label="Visual design" value="beijing"></el-option>
-              <el-option label="Photography" value="beijing"></el-option>
+            <el-select v-model="queryInfo.cate" placeholder="请选择">
+              <el-option label="photography" value="photography"></el-option>
+              <el-option label="visual design" value="visual design"></el-option>
+              <el-option label="data visualization" value="data visualization"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="mini">筛选</el-button>
+            <el-button type="primary" @click="onSubmit" size="mini">筛选</el-button>
           </el-form-item>
         </el-form>
       </div>
 
       <div class="Collections">
-        <div class="CollectionContent">
-          <div><img src="../../assets/collection1.png" alt="" /></div>
-          <span>Python数据可视化的魅力</span>
-          <span>April 24, 2019</span>
-        </div>
-        <div class="CollectionContent">
-          <div><img src="../../assets/collection1.png" alt="" /></div>
-          <span>Python数据可视化的魅力</span>
-          <span>April 24, 2019</span>
-        </div>
-        <div class="CollectionContent">
-          <div><img src="../../assets/collection1.png" alt="" /></div>
-          <span>Python数据可视化的魅力</span>
-          <span>April 24, 2019</span>
-        </div>
-        <div class="CollectionContent">
-          <div><img src="../../assets/collection1.png" alt="" /></div>
-          <span>Python数据可视化的魅力</span>
-          <span>April 24, 2019</span>
-        </div>
-        <div class="CollectionContent">
-          <div><img src="../../assets/collection1.png" alt="" /></div>
-          <span>Python数据可视化的魅力</span>
-          <span>April 24, 2019</span>
-        </div>
-        <div class="CollectionContent">
-          <div><img src="../../assets/collection1.png" alt="" /></div>
-          <span>Python数据可视化的魅力</span>
-          <span>April 24, 2019</span>
+        <div class="CollectionContent" v-for="item in collections" :key="item._id">
+          <a v-bind:href="['http://localhost:8080/#/collection?id=' + item._id]">
+            <div><img v-bind:src="['http://localhost:8888/' + item.mainImg]" alt="" /></div>
+            <span>{{ item.title }}</span>
+            <span>{{ item.date.substr(0, 10) }}</span>
+          </a>
         </div>
       </div>
     </div>
@@ -107,7 +86,69 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      queryInfo: {
+        time: '',
+        cate: ''
+      },
+      collections: {
+        _id: '',
+        title: '',
+        date: '',
+        mainImg: ''
+      },
+      showFilter: 'block'
+    }
+  },
+  created () {
+    this.getCollection()
+  },
+  watch: {
+    $route(to, from) {
+      this.queryInfo.date = ''
+      this.queryInfo.cate = ''
+      this.showFilter = 'block'
+      this.getCollection()
+    }
+  },
+  methods: {
+    GetRequest () {
+      const url = window.location.hash // 获取url中"?"符后的字串Request = GetRequest()
+      const theRequest = []
+      if (url.indexOf('?') !== -1) {
+        const str = url.substr(14)
+        const strs = str.split('&')
+        for (let i = 0; i < strs.length; i++) {
+          theRequest[strs[i].split('=')[0]] = unescape(strs[i].split('=')[1])
+        }
+      }
+      return theRequest
+    },
+    async getCollection () {
+      const newCate = this.GetRequest().cate
+      console.log(newCate)
+      const that = this
+      if (newCate) {
+        that.queryInfo.cate = newCate
+        that.queryInfo.date = ''
+        that.showFilter = 'none'
+      }
+      const { data: res } = await this.$http.get('/collections', {
+        params: this.queryInfo
+      })
+      this.collections = res.data.collections
+      // this.collections.date = this.collections.date.toString()
+      // console.log(this.collections.date)
+      // this.collections.date = this.collections.date.substr(0, 10)
+      console.log(this.collections)
+    },
+    onSubmit () {
+      this.getCollection()
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -179,28 +220,56 @@ export default {}
     }
   }
 
-  /deep/ .el-input__inner {
-    border-top: 0;
-    border-bottom: 2px solid #000000;
-    border-left: 0;
-    border-right: 0;
-    border-radius: 0;
-    padding: 0;
+  /deep/ .el-icon-caret-right {
+    transition: none !important;
   }
 
-  // /deep/ .el-icon-search {
-  //   vertical-align: base;
-  // }
+  /deep/ .el-icon-search {
+    vertical-align: base;
+  }
 
   .main {
     width: 100%;
     margin-top: 60px;
   }
   .collectionFilter {
-    width: 100%;
-    margin: 40px auto;
-    display: flex;
-    justify-content: center;
+    width: auto;
+    margin: 50px auto;
+    .el-form {
+      width: 580px;
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
+      .el-form-item:nth-child(3n+1) {
+        width: 250px;
+        margin-bottom: 0;
+      }
+      .el-form-item:nth-child(3n+2) {
+        width: 250px;
+        margin-bottom: 0;
+      }
+      .el-form-item:nth-child(3n+3) {
+        width: 46px;
+        margin-bottom: 0;
+        .el-button {
+          height: 28px;
+        }
+      }
+    }
+    /deep/ .el-input__inner {
+      border-top: 0;
+      border-bottom: 1px solid #000000;
+      border-left: 0;
+      border-right: 0;
+      border-radius: 0;
+      padding: 0;
+      width: 200px;
+      height: 30px;
+    }
+    /deep/ .el-button--primary {
+      background-color: #000000;
+      border: 0;
+    }
     .demo-form-inline {
       display: block;
       > el-form-item {
@@ -212,34 +281,100 @@ export default {}
   }
   .Collections {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
-    .CollectionContent {
+    .CollectionContent:nth-child(3n+3) {
       width: 30%;
+      padding: 0;
       margin-bottom: 45px;
-      span:nth-child(2) {
-        display: block;
-        width: 100%;
-        padding: 15px 0 0 0;
-        font-size: 16px;
-        text-align: center;
-      }
-      span:nth-child(3) {
-        display: block;
-        width: 100%;
-        padding: 10px 0 0 0;
-        font-size: 12px;
-        text-align: center;
-      }
-      > div {
-        display: block;
-        width: 100%;
-        > img {
+      a {
+        text-decoration: none;
+        color: #000000;
+        span:nth-child(2) {
+          display: block;
           width: 100%;
-          height: auto;
+          padding: 15px 0 0 0;
+          font-size: 16px;
+          text-align: center;
+        }
+        span:nth-child(3) {
+          display: block;
+          width: 100%;
+          padding: 10px 0 0 0;
+          font-size: 12px;
+          text-align: center;
+        }
+        > div {
+          display: block;
+          width: 100%;
+          > img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+    }
+    .CollectionContent:nth-child(3n+1) {
+      width: 30%;
+      padding-right: 5%;
+      margin-bottom: 45px;
+      a {
+        text-decoration: none;
+        color: #000000;
+        span:nth-child(2) {
+          display: block;
+          width: 100%;
+          padding: 15px 0 0 0;
+          font-size: 16px;
+          text-align: center;
+        }
+        span:nth-child(3) {
+          display: block;
+          width: 100%;
+          padding: 10px 0 0 0;
+          font-size: 12px;
+          text-align: center;
+        }
+        > div {
+          display: block;
+          width: 100%;
+          > img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+    }
+    .CollectionContent:nth-child(3n+2) {
+      width: 30%;
+      padding-right: 5%;
+      margin-bottom: 45px;
+      a {
+        text-decoration: none;
+        color: #000000;
+        span:nth-child(2) {
+          display: block;
+          width: 100%;
+          padding: 15px 0 0 0;
+          font-size: 16px;
+          text-align: center;
+        }
+        span:nth-child(3) {
+          display: block;
+          width: 100%;
+          padding: 10px 0 0 0;
+          font-size: 12px;
+          text-align: center;
+        }
+        > div {
+          display: block;
+          width: 100%;
+          > img {
+            width: 100%;
+            height: auto;
+          }
         }
       }
     }

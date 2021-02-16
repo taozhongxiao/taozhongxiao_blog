@@ -40,8 +40,6 @@
             <div v-html="article.content"></div>
           </div>
         </div>
-        <p class="previous">previous</p>
-        <p class="next">next</p>
       </div>
     </div>
 

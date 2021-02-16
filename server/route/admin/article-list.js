@@ -12,11 +12,12 @@ module.exports = async (req, res, next) => {
   let Articles = await Article.find({})
     .limit(pagesize * 1)
     .skip(start)
+    .sort([['date', 1]])
   // 渲染用户列表模块
   // 将页面重定向到用户列表页面
   res
     .send({
       meta: { status: 200 },
-      data: { Articles, total, message: '获取文章信息成功' }
+      data: { Articles, total, count, message: '获取文章信息成功' }
     })
 }

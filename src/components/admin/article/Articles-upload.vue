@@ -126,15 +126,17 @@ export default {
         cate: '',
         username: '',
         class: '',
-        date: ''
+        date: '',
+        mainImg: '',
+        id: ''
       },
       addArticleRules: {
         title: [
           { required: true, message: '请输入文章标题', trigger: 'blur' },
           {
-            min: 6,
-            max: 15,
-            message: '标题长度在6~15个字符之间',
+            min: 2,
+            max: 25,
+            message: '标题长度在2~25个字符之间',
             trigger: 'blur'
           }
         ],
@@ -195,6 +197,7 @@ export default {
         this.addArticleForm.cate = res.data.Articles[0].cate
         this.addArticleForm.date = res.data.Articles[0].date
         this.addArticleForm.mainImg = res.data.Articles[0].mainImg
+        this.addArticleForm.id = res.data.Articles[0]._id
         this.content = res.data.Articles[0].content
         console.log(res)
       }
@@ -239,22 +242,41 @@ export default {
       this.$message.success('图片上传成功！')
     },
     async upload() {
-      if (this.addArticleForm.mainImg && this.content) {
-        const { data: res } = await this.$http.post('/admin/article-upload', {
-          username: this.addArticleForm.username,
-          class: this.addArticleForm.class,
-          cate: this.addArticleForm.cate,
-          title: this.addArticleForm.title,
-          digest: this.addArticleForm.digest,
-          content: this.content,
-          mainImg: this.addArticleForm.mainImg ? this.addArticleForm.mainImg : this.uploadSuccessUrl + this.uploadSuccessFileName,
-          date: this.addArticleForm.date,
-          state: 1,
-          featured: 0
-        })
-        if (res.meta.status !== 200) return this.$message.error('图片删除失败')
-        this.$message.success('文章上传成功')
-        this.$router.push('/admin/articles')
+      if ((this.addArticleForm.mainImg || this.uploadSuccessUrl) && this.content) {
+        if (this.addArticleForm.id) {
+          const { data: res } = await this.$http.post('/admin/article-upload', {
+            username: this.addArticleForm.username,
+            class: this.addArticleForm.class,
+            cate: this.addArticleForm.cate,
+            title: this.addArticleForm.title,
+            digest: this.addArticleForm.digest,
+            content: this.content,
+            mainImg: this.addArticleForm.mainImg ? this.addArticleForm.mainImg : this.uploadSuccessUrl + '/' + this.uploadSuccessFileName,
+            date: this.addArticleForm.date,
+            _id: this.addArticleForm.id,
+            state: 1,
+            featured: 0
+          })
+          if (res.meta.status !== 200) return this.$message.error('文章修改失败')
+          this.$message.success('文章修改成功')
+          this.$router.push('/admin/articles')
+        } else {
+          const { data: res } = await this.$http.post('/admin/article-upload', {
+            username: this.addArticleForm.username,
+            class: this.addArticleForm.class,
+            cate: this.addArticleForm.cate,
+            title: this.addArticleForm.title,
+            digest: this.addArticleForm.digest,
+            content: this.content,
+            mainImg: this.addArticleForm.mainImg ? this.addArticleForm.mainImg : this.uploadSuccessUrl + '/' + this.uploadSuccessFileName,
+            date: this.addArticleForm.date,
+            state: 1,
+            featured: 0
+          })
+          if (res.meta.status !== 200) return this.$message.error('文章发布失败')
+          this.$message.success('文章发布成功')
+          this.$router.push('/admin/articles')
+        }
       } else {
         this.$message.error('请先完成文章！')
       }

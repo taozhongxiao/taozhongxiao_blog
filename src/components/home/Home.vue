@@ -29,94 +29,70 @@
     <div class="main">
       <!--页面边栏-->
       <div class="aside">
-        <a
-          v-bind:href="[
-            'http://localhost:8080/#/articles?id=' + mainArticle.id
-          ]"
+        <el-carousel
+          indicator-position="none"
+          class="carousel"
+          interval="10000"
+          height="583px"
+          :style="isCollapse ? 'display: none' : ''"
         >
-          <div class="mainArticle" :style="isCollapse ? 'display: none' : ''">
-            <span class="mainArticleTitle">{{ mainArticle.title }}</span>
-            <span class="mainArticleDigest">{{ mainArticle.digest }}</span>
-            <img
-              v-bind:src="[
-                'http://localhost:8888/' +
-                  mainArticle.imgsrc +
-                  '/fog-3622519_1920.jpg'
-              ]"
-              alt=""
-              class="mainArticleImage"
-            />
-          </div>
-        </a>
+          <el-carousel-item
+            v-for="item in mainArticle"
+            :key="item"
+            class="carouselItem"
+            height="583px"
+          >
+            <a
+              v-bind:href="['http://localhost:8080/#/articles?id=' + item._id]"
+            >
+              <div class="mainArticle">
+                <span class="mainArticleTitle">{{ item.title }}</span>
+                <span class="mainArticleDigest">{{ item.digest }}</span>
+                <img
+                  v-bind:src="['http://localhost:8888/' + item.mainImg]"
+                  alt=""
+                  class="mainArticleImage"
+                />
+              </div>
+            </a>
+          </el-carousel-item>
+        </el-carousel>
 
+        <!--页面边栏cate-->
         <div
           class="articleCateList"
           :style="!isCollapse ? 'display: none' : ''"
         >
           <ul>
-            <li>html</li>
-            <li>node.js</li>
-            <li>JavaScript</li>
-            <li>web browser</li>
-            <li>css</li>
-            <li>mySql</li>
-            <li>jQuery</li>
-            <li>webpack</li>
-            <li>express</li>
-            <li>data structure</li>
-            <li>computer network</li>
+            <li v-for="item in cateList" :key="item.cate" @click="showList(item.cate)">
+              <a
+                v-bind:href="[
+                  'http://localhost:8080/#/'
+                ]"
+                >{{ item.cate }}</a
+              >
+            </li>
           </ul>
         </div>
       </div>
       <!--页面主体-->
       <div class="article">
-        <span>最新文章</span>
-        <div class="listArticle">
-          <div class="listArticleLetter">
-            <span class="listArticleCate">#JavaScript</span>
-            <span class="listArticleTitle">JavaScript的回调函数详解 </span>
-            <span class="listArticleDigest"
-              >被作为实参传入另一函数，并在该外部函数内被调用，用以来完成某些任务的函数，称为回调函数。回调函数经常被用于继续执行一个异步
-              完成后的操作，它们被称为异步回调。</span
-            >
-          </div>
-          <img src="../../assets/js.png" alt="" />
+        <p>最新文章</p>
+        <div class="listArticle" v-for="item in listArticle" :key="item._id">
+          <a v-bind:href="['http://localhost:8080/#/articles?id=' + item._id]">
+            <div class="listArticleLetter">
+              <span class="listArticleCate">#{{ item.cate }}</span>
+              <span class="listArticleTitle">{{ item.title }}</span>
+              <span class="listArticleDigest">{{ item.digest }}</span>
+            </div>
+            <img
+              v-bind:src="['http://localhost:8888/' + item.mainImg]"
+              alt=""
+            />
+          </a>
         </div>
-        <div class="listArticle">
-          <div class="listArticleLetter">
-            <span class="listArticleCate">#JavaScript</span>
-            <span class="listArticleTitle">JavaScript的回调函数详解 </span>
-            <span class="listArticleDigest"
-              >被作为实参传入另一函数，并在该外部函数内被调用，用以来完成某些任务的函数，称为回调函数。回调函数经常被用于继续执行一个异步
-              完成后的操作，它们被称为异步回调。</span
-            >
-          </div>
-          <img src="../../assets/js.png" alt="" />
-        </div>
-        <div class="listArticle">
-          <div class="listArticleLetter">
-            <span class="listArticleCate">#JavaScript</span>
-            <span class="listArticleTitle">JavaScript的回调函数详解 </span>
-            <span class="listArticleDigest"
-              >被作为实参传入另一函数，并在该外部函数内被调用，用以来完成某些任务的函数，称为回调函数。回调函数经常被用于继续执行一个异步
-              完成后的操作，它们被称为异步回调。</span
-            >
-          </div>
-          <img src="../../assets/js.png" alt="" />
-        </div>
-        <div class="listArticle">
-          <div class="listArticleLetter">
-            <span class="listArticleCate">#JavaScript</span>
-            <span class="listArticleTitle">JavaScript的回调函数详解 </span>
-            <span class="listArticleDigest"
-              >被作为实参传入另一函数，并在该外部函数内被调用，用以来完成某些任务的函数，称为回调函数。回调函数经常被用于继续执行一个异步
-              完成后的操作，它们被称为异步回调。</span
-            >
-          </div>
-          <img src="../../assets/js.png" alt="" />
-        </div>
-        <p class="previous">previous</p>
-        <p class="next">next</p>
+        <a class="previous" @click="previous" v-bind:style="{ display: showPrevious }">previous</a>
+        <a class="next" @click="next" v-bind:style="{ display: showNext }">next</a>
       </div>
     </div>
 
@@ -126,7 +102,7 @@
       <div class="mainMenuPhotography">
         <div>
           <img src="../../assets/1-edit.png" alt="" />
-          <a href="http://localhost:8080/collections?cate=photography">
+          <a href="http://localhost:8080/#/collections?cate=photography">
             <span>
               Photography
             </span>
@@ -144,7 +120,7 @@
           设计产出，以及收藏的设计类文章与素材合辑
         </div>
         <div class="text">
-          <a href="http://localhost:8080/collections?cate=visual-design">
+          <a href="http://localhost:8080/#/collections?cate=visual design">
             <span>Visual<br />Design</span>
           </a>
         </div>
@@ -153,7 +129,7 @@
       <!--可视化-->
       <div class="mainMenuData">
         <div class="dataText">
-          <a href="http://localhost:8080/collections?cate=data-visualization">
+          <a href="http://localhost:8080/#/collections?cate=data visualization">
             <span>Data<br />Visualization</span>
           </a>
         </div>
@@ -169,27 +145,29 @@
 
     <div class="more">
       <img src="../../assets/about.png" alt="" />
-      <a href="http://localhost:8080/more">
+      <a href="http://localhost:8080/#/more">
         <span>About<br />更多</span>
       </a>
     </div>
 
     <!--页面footer-->
     <footer>
-      <a href="https://github.com/taozhongxiao" title="github" target="_blank"
-        >github</a
+      <a href="https://github.com/taozhongxiao" title="github" target="_blank" class="iconfont"
+        >&#xe6f6;</a
       >
       <a
         href="https://www.douban.com/people/139374534/"
         title="douban"
         target="_blank"
-        >douban</a
+        class="iconfont"
+        >&#xe691;</a
       >
       <a
         href="https://www.kaggle.com/taozhongxiao"
         title="kaggle"
         target="_blank"
-        >kaggle</a
+        class="iconfont"
+        >&#xe600;</a
       >
       <a class="identity" href="http://beian.miit.gov.cn/" target="_blank"
         >鄂ICP备2021002553号</a
@@ -205,22 +183,39 @@ export default {
     return {
       isCollapse: '',
       mainQueryInfo: {
-        pagesize: 1
+        pagesize: 3,
+        pagenum: 1,
+        featured: true,
+        cate: ''
       },
       listQueryInfo: {
-        pagesize: 10,
-        pagenum: 1
+        pagesize: 6,
+        pagenum: 1,
+        featured: false,
+        cate: ''
       },
       mainArticle: {
         title: '',
         digest: '',
         imgsrc: '',
-        id: ''
-      }
+        _id: ''
+      },
+      listArticle: {
+        title: '',
+        digest: '',
+        mainImg: '',
+        _id: ''
+      },
+      cateList: [],
+      showPrevious: 'none',
+      showNext: 'block',
+      total: 0
     }
   },
-  created() {
+  created () {
     this.getMainArticle()
+    this.getListArticle()
+    this.getTag()
     // this.getListArticle()
   },
   methods: {
@@ -228,15 +223,61 @@ export default {
       const { data: res } = await this.$http.get('/main-article', {
         params: this.mainQueryInfo
       })
-      this.mainArticle.title = res.data.mainArticles[0].title
-      this.mainArticle.digest = res.data.mainArticles[0].digest
-      this.mainArticle.imgsrc = res.data.mainArticles[0].mainImg
-      this.mainArticle.id = res.data.mainArticles[0]._id
-      console.log('主文章成功')
+      // this.mainArticle.title = res.data.mainArticles[0].title
+      // this.mainArticle.digest = res.data.mainArticles[0].digest
+      // this.mainArticle.mainImg = res.data.mainArticles[0].mainImg
+      // this.mainArticle.id = res.data.mainArticles[0]._id
+      this.mainArticle = res.data.homeArticles
+      console.log('获取左侧主文章成功')
+      console.log(res)
+      // console.log(this.mainArticle.mainImg)
+    },
+    async getListArticle() {
+      const { data: res } = await this.$http.get('/main-article', {
+        params: this.listQueryInfo
+      })
+      this.listArticle = res.data.homeArticles
+      this.total = res.data.total
+      const that = this
+      if (that.listQueryInfo.pagenum === 1 && that.total !== 1) {
+        that.showPrevious = 'none'
+        that.showNext = 'block'
+      } else if (that.listQueryInfo.pagenum === that.total) {
+        that.showNext = 'none'
+      } else {
+        that.showNext = 'block'
+      }
+      console.log('获取右侧文章列表成功')
       console.log(res)
     },
     toggleCollapse() {
       this.isCollapse = !this.isCollapse
+      console.log(this.isCollapse)
+      this.listQueryInfo.cate = ''
+      const that = this
+      if (that.isCollapse === false) {
+        that.getListArticle()
+      }
+    },
+    async getTag() {
+      const { data: res } = await this.$http.get('/admin/cate')
+      console.log(res)
+      this.cateList = res.data.cates.filter(item => item.class === 'article')
+      console.log(this.cateList)
+      if (res.meta.status !== 200) return this.$message.error('分类获取失败')
+    },
+    previous () {
+      this.listQueryInfo.pagenum -= 1
+      this.getListArticle()
+    },
+    next () {
+      this.listQueryInfo.pagenum += 1
+      this.getListArticle()
+      this.showPrevious = 'block'
+    },
+    async showList (cate) {
+      this.listQueryInfo.cate = cate
+      this.getListArticle()
     }
   }
 }
@@ -327,21 +368,74 @@ export default {
     justify-content: space-between;
     .aside {
       width: 45%;
-      height: 553px;
+      height: 583px;
       margin: 44px 0 0 0;
     }
     .article {
       width: 50%;
-      height: 553px;
+      height: 583px;
       margin: 44px 0 0 0;
       overflow-y: scroll;
-      > span {
+      > p {
         width: 100%;
+        margin-bottom: 0;
         display: block;
         padding: 7px 0 0 0;
         font-weight: bold;
         font-size: 20px;
         border-bottom: solid 1px #000000;
+      }
+      .listArticle {
+        padding: 20px 0 20px 0;
+        height: 190px;
+        width: 100%;
+        border-bottom: 1px solid #000000;
+        display: flex;
+        justify-content: space-between;
+        a {
+          // padding: 20px 0 20px 0;
+          height: 190px;
+          width: 100%;
+          // border-bottom: 1px solid #000000;
+          display: flex;
+          justify-content: space-between;
+          img {
+            display: block;
+            margin: 0 0 0 0;
+            width: 30%;
+            min-width: 190px;
+            height: auto;
+            // transform: translateY(-210px;);
+          }
+          .listArticleLetter {
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            .listArticleCate {
+              display: block;
+              padding: 0;
+              font-size: 13px;
+              // font-style: italic;
+              width: 100%;
+            }
+            .listArticleTitle {
+              display: block;
+              font-weight: bold;
+              font-size: 24px;
+              padding: 0;
+              width: auto;
+            }
+            .listArticleDigest {
+              display: block;
+              font-size: 14px;
+              height: 62px;
+              width: auto;
+              margin: 0;
+              overflow: hidden;
+            }
+          }
+        }
       }
       .previous {
         display: block;
@@ -544,7 +638,7 @@ export default {
 }
 
 .mainArticle {
-  height: 553px;
+  height: 583px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -580,48 +674,6 @@ export default {
     font-weight: bold;
     padding: 3px 0;
     list-style: none;
-  }
-}
-
-.listArticle {
-  padding: 20px 0 20px 0;
-  height: 190px;
-  border-bottom: 1px solid #000000;
-  display: flex;
-  justify-content: space-between;
-  > img {
-    display: block;
-    margin: 0 0 0 30px;
-    // transform: translateY(-210px;);
-  }
-}
-
-.listArticleLetter {
-  width: 68%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  .listArticleCate {
-    display: block;
-    padding: 0;
-    font-size: 13px;
-    font-style: italic;
-    width: auto;
-  }
-  .listArticleTitle {
-    display: block;
-    font-weight: bold;
-    font-size: 24px;
-    padding: 0;
-    width: auto;
-  }
-  .listArticleDigest {
-    display: block;
-    font-size: 14px;
-    height: 62px;
-    width: auto;
-    margin: 0;
-    overflow: hidden;
   }
 }
 
@@ -669,9 +721,26 @@ footer {
     margin: 0;
     font-size: 14px;
   }
-  > a {
+  a:nth-child(4) {
     display: block;
     font-size: 14px;
+    float: left;
+    margin: 20px 30px 15px 0;
+    color: #000000;
+    text-decoration: none;
+  }
+  a:nth-child(2) {
+    display: block;
+    font-size: 19px;
+    transform: translateY(0.5px);
+    float: left;
+    margin: 20px 30px 15px 0;
+    color: #000000;
+    text-decoration: none;
+  }
+  a {
+    display: block;
+    font-size: 18px;
     float: left;
     font-weight: bold;
     margin: 20px 30px 15px 0;

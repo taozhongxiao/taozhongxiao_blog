@@ -38,7 +38,9 @@ import {
   Tooltip,
   DatePicker,
   Tag,
-  MessageBox
+  MessageBox,
+  Carousel,
+  CarouselItem
 } from 'element-ui'
 
 Vue.use(Container)
@@ -74,6 +76,8 @@ Vue.use(DropdownMenu)
 Vue.use(Tooltip)
 Vue.use(DatePicker)
 Vue.use(Tag)
+Vue.use(Carousel)
+Vue.use(CarouselItem)
 
 Vue.use(VueQuillEditor)
 Vue.prototype.$message = Message

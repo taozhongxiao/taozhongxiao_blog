@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import './assets/css/global.css'
+import './assets/font/iconfont.css'
 
 import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:8888'

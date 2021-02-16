@@ -35,7 +35,7 @@
         <el-table-column
           label="标题"
           prop="title"
-          width="220px"
+          width="260px"
         ></el-table-column>
         <el-table-column
           label="Class"
@@ -47,8 +47,8 @@
           :filter-method="filterTag"
         ></el-table-column>
         <el-table-column label="分类" prop="cate"></el-table-column>
-        <el-table-column label="日期" prop="date" sortable></el-table-column>
-        <el-table-column label="精选">
+        <el-table-column label="日期" width="220px" prop="date" sortable></el-table-column>
+        <el-table-column label="精选" width="120px">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.featured"
@@ -57,7 +57,7 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="240px">
+        <el-table-column label="操作" width="140px">
           <template slot-scope="scope">
             <!-- 修改按钮 -->
             <el-button
@@ -138,7 +138,7 @@ export default {
         // 当前的页数
         pagenum: 1,
         // 当前每页显示多少条数据
-        pagesize: 6
+        pagesize: 5
       },
       articlelist: [],
       total: 0,
@@ -218,9 +218,8 @@ export default {
         return this.$message.error('获取文章列表失败！')
       }
       this.articlelist = res.data.Articles
-      // this.articlelist.featured ? 1 : 0
-      console.log(this.articlelist[0].featured)
-      this.total = res.data.total
+      // console.log(this.articlelist[0].featured)
+      this.total = res.data.count
     },
     // 监听 pagesize 改变的事件
     handleSizeChange(newSize) {
@@ -284,4 +283,9 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.el-card {
+  height: 520px;
+  overflow-y: scroll;
+}
+</style>

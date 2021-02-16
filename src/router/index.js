@@ -12,6 +12,7 @@ import Users from '../components/admin/user/Users.vue'
 import Articles from '../components/admin/article/Articles.vue'
 import Articlesupload from '../components/admin/article/Articles-upload.vue'
 import Categories from '../components/admin/article/Categories.vue'
+import CollectionDetail from '../components/home/collection/Collection-detail.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,7 @@ const routes = [
   { path: '/articles', component: Article },
   { path: '/more', component: More },
   { path: '/collections', component: Collection },
+  { path: '/collection', component: CollectionDetail },
   { path: '/login', component: Login },
   {
     path: '/admin',

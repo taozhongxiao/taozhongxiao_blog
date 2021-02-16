@@ -5,8 +5,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    minlength: 6,
-    maxlength: 15
+    minlength: 2,
+    maxlength: 25
   },
   digest: {
     type: String,
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   date: {
-    type: String,
+    type: Date,
     required: true
   },
   mainImg: {

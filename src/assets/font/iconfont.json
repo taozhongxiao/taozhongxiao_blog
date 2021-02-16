@@ -1,0 +1,30 @@
+{
+  "id": "2374019",
+  "name": "blog",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1244189",
+      "name": "豆瓣",
+      "font_class": "douban",
+      "unicode": "e691",
+      "unicode_decimal": 59025
+    },
+    {
+      "icon_id": "7239484",
+      "name": "github",
+      "font_class": "github",
+      "unicode": "e6f6",
+      "unicode_decimal": 59126
+    },
+    {
+      "icon_id": "14343698",
+      "name": "kaggle",
+      "font_class": "kaggle",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    }
+  ]
+}
