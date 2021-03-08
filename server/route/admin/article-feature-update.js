@@ -3,8 +3,6 @@ const { Article } = require('../../model/article')
 module.exports = async (req, res, next) => {
   const id = req.query.id
   const featured = req.query.featured
-  console.log(id)
-  console.log(featured)
   if (featured === 'true') {
     await Article.updateOne({ _id: id },{ $set: { featured: true } })
   } else {
@@ -15,5 +13,4 @@ module.exports = async (req, res, next) => {
       meta: { status: 200 },
       data: { message: '修改精选状态成功' }
     })
-  console.log('x')
 }

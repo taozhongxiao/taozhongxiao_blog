@@ -85,7 +85,6 @@ export default {
   methods: {
     async getTag() {
       const { data: res } = await this.$http.get('/admin/cate')
-      console.log(res)
       this.dynamicTags.article = res.data.cates.filter(
         item => item.class === 'article'
       )

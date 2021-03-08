@@ -44,6 +44,7 @@ admin.get('/articles', require('./admin/article-list'))
 
 admin.get('/articles-update', require('./admin/article-update'))
 admin.get('/articles-feature-update', require('./admin/article-feature-update'))
+admin.get('/subscribers', require('./admin/subscribers'))
 
 admin.get('/cate', require('./admin/cate'))
 admin.post('/cate-add', require('./admin/cate-add'))

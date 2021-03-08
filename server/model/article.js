@@ -56,12 +56,6 @@ const userSchema = new mongoose.Schema({
 // 创建集合
 const Article = mongoose.model('Article', userSchema)
 
-// Otherarticle.remove({
-//     title: '中国的树是怎样被砍光的'
-// }, function(error,doc){
-//   console.log(doc)
-// })
-
 module.exports = {
   Article
 }

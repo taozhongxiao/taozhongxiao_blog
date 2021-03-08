@@ -67,7 +67,7 @@
         </el-form>
         <el-upload
           class="upload-demo"
-          action="http://localhost:8888/admin/articleImg-upload"
+          action="http://81.70.197.183/api//admin/articleImg-upload"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :on-success="handleSuccess"
@@ -153,15 +153,6 @@ export default {
           { required: true, message: '请选择分类', trigger: 'blur' },
           { min: 3, max: 20 }
         ]
-        // author: [
-        //   { required: true, message: '请输入作者', trigger: 'blur' },
-        //   {
-        //     min: 3,
-        //     max: 12,
-        //     message: '作者姓名在3~12个字符之间',
-        //     trigger: 'blur'
-        //   }
-        // ]
       }
     }
   },
@@ -199,7 +190,6 @@ export default {
         this.addArticleForm.mainImg = res.data.Articles[0].mainImg
         this.addArticleForm.id = res.data.Articles[0]._id
         this.content = res.data.Articles[0].content
-        console.log(res)
       }
     },
     getUserName() {
@@ -212,7 +202,6 @@ export default {
     onEditorFocus() {}, // 获得焦点事件
     onEditorChange() {}, // 内容改变事件
     async handleRemove(file, fileList) {
-      console.log(file, fileList)
       const { data: res } = await this.$http.post('/admin/articleImg-delete', {
         url: this.uploadSuccessUrl,
         filepath: file.name
@@ -222,21 +211,13 @@ export default {
       this.$message.success('图片删除成功！')
     },
     handlePreview(file) {
-      // console.log(file)
+
     },
     handleExceed(files, fileList) {
-      // this.$message.warning(
-      //   `当前限制选择 3 个文件，本次选择了 ${
-      //     files.length
-      //   } 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      // )
     },
     beforeRemove(file, fileList) {
-      // return this.$confirm(`确定移除 ${file.name}？`)
     },
     handleSuccess(res, file) {
-      console.log(res)
-      console.log(file)
       this.uploadSuccessUrl = res
       this.uploadSuccessFileName = file.name
       this.$message.success('图片上传成功！')
@@ -285,7 +266,6 @@ export default {
       const { data: res } = await this.$http.get('/admin/cate')
       if (res.meta.status !== 200) return this.$message.error('分类获取失败')
       this.classList = res.data.cates
-      console.log(this.classList)
     }
   },
   computed: {

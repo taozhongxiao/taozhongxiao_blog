@@ -2,7 +2,6 @@ const { Article } = require('../../model/article')
 
 module.exports = async (req, res, next) => {
   let id = req.query.aid
-  console.log(id)
   const Articles = await Article.find({ _id: id })
   res
     .send({

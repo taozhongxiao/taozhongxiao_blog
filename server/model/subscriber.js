@@ -18,10 +18,6 @@ const userSchema = new mongoose.Schema({
 
 const Subscriber = mongoose.model('Subscriber', userSchema)
 
-// Cate.create({
-//   class: 'collection',
-//   cate: 'photography'
-// })
 module.exports = {
   Subscriber
 }

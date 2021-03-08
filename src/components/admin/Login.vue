@@ -3,7 +3,7 @@
     <!--页面header-->
     <header>
       <div>
-        taozhongxiao.
+        zào bái
       </div>
       <!--页面顶部导航区域-->
       <nav>
@@ -52,22 +52,31 @@
 
     <!--页面footer-->
     <footer>
-      <a href="https://github.com/taozhongxiao" title="github" target="_blank"
-        >github</a
+      <a
+        href="https://github.com/taozhongxiao"
+        title="github"
+        target="_blank"
+        class="iconfont"
+        >&#xe6f6;</a
       >
       <a
         href="https://www.douban.com/people/139374534/"
         title="douban"
         target="_blank"
-        >douban</a
+        class="iconfont"
+        >&#xe691;</a
       >
       <a
         href="https://www.kaggle.com/taozhongxiao"
         title="kaggle"
         target="_blank"
-        >kaggle</a
+        class="iconfont"
+        >&#xe600;</a
       >
-      <p>Hosted by taozhongxiao</p>
+      <a class="identity" href="http://beian.miit.gov.cn/" target="_blank"
+        >鄂ICP备2021002553号</a
+      >
+      <p>Hosted by <b>taozhongxiao</b></p>
     </footer>
   </div>
 </template>
@@ -118,7 +127,6 @@ export default {
   methods: {
     async login () {
       const { data: res } = await this.$http.post('/admin/login', this.loginForm)
-      console.log(res)
       if (res.meta.status !== 200) {
         this.$message.error('登录失败！')
       }
@@ -224,26 +232,68 @@ export default {
   }
 
   footer {
-    position: absolute;
-    bottom: 0;
     width: 92%;
-    margin-top: 0;
+    padding: 0 4%;
+    position: fixed;
+    z-index: 100;
+    backdrop-filter: blur(80px);
+    bottom: 0;
+    padding-top: 10px;
     border-top: solid 1px #000000;
     padding: 0;
     > p {
-      padding: 15px 0;
-      margin: 0;
+      line-height: 55px;
+      display: block;
       float: right;
+      margin: 0;
       font-size: 14px;
     }
-    > a {
+    a:nth-child(4) {
       display: block;
-      float: left;
       font-size: 14px;
-      font-weight: bold;
-      margin: 15px 30px 15px 0;
+      line-height: 55px;
+      float: left;
+      margin: 0;
       color: #000000;
       text-decoration: none;
+    }
+    a:nth-child(2) {
+      display: block;
+      font-size: 17.1px;
+      transform: translateY(0.2px);
+      float: left;
+      margin: 0 25px 0 0;
+      color: #000000;
+      text-decoration: none;
+    }
+    a:nth-child(3) {
+      display: block;
+      font-size: 14.8px;
+      transform: translateY(-0.2px);
+      float: left;
+      margin: 0 25px 0 0;
+      color: #000000;
+      text-decoration: none;
+    }
+    a {
+      display: block;
+      font-size: 16px;
+      float: left;
+      font-weight: bold;
+      margin: 0 25px 0 0;
+      line-height: 55px;
+      color: #000000;
+      text-decoration: none;
+    }
+    .identity {
+      position: absolute;
+      left: 50%;
+      font-weight: normal;
+      transform: translateX(-50%);
+    }
+    > div {
+      font-size: 14px;
+      font-weight: bold;
     }
     > a:hover {
       color: #808080;

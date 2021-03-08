@@ -15,10 +15,6 @@ const userSchema = new mongoose.Schema({
 
 const Cate = mongoose.model('Cate', userSchema)
 
-// Cate.create({
-//   class: 'collection',
-//   cate: 'photography'
-// })
 module.exports = {
   Cate
 }

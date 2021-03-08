@@ -236,29 +236,24 @@ export default {
       const { data: res } = await this.$http.get('admin/users', {
         params: this.queryInfo
       })
-      console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('获取用户列表失败！')
       }
       this.userlist = res.data.users
       this.total = res.data.total
-      console.log(res)
     },
     // 监听 pagesize 改变的事件
     handleSizeChange(newSize) {
-      // console.log(newSize)
       this.queryInfo.pagesize = newSize
       this.getUserList()
     },
     // 监听 页码值 改变的事件
     handleCurrentChange(newPage) {
-      console.log(newPage)
       this.queryInfo.pagenum = newPage
       this.getUserList()
     },
     // 监听 switch 开关状态的改变
     async userStateChanged(userinfo) {
-      console.log(userinfo)
       const { data: res } = await this.$http.put(
         `users/${userinfo.id}/state/${userinfo.mg_state}`
       )
@@ -278,22 +273,18 @@ export default {
         if (!valid) return
         // 可以发起添加用户的网络请求
         const { data: res } = await this.$http.post('/admin/users', this.addForm)
-        console.log(res)
         if (res.meta.status !== 201) {
           this.$message.error('添加用户失败！')
         }
         this.$message.success('添加用户成功！')
-        console.log('2')
         // 隐藏添加用户的对话框
         this.addDialogVisible = false
-        console.log('3')
         // 重新获取用户列表数据
         // this.getUserList()
       })
     },
     // 展示编辑用户的对话框
     async showEditDialog(id) {
-      // console.log(id)
       const { data: res } = await this.$http.get('users/' + id)
 
       if (res.meta.status !== 200) {
@@ -347,7 +338,6 @@ export default {
 
       // 如果用户确认删除，则返回值为字符串 confirm
       // 如果用户取消了删除，则返回值为字符串 cancel
-      // console.log(confirmResult)
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消删除')
       }

@@ -3,7 +3,7 @@
     <!--页头-->
     <div height="90px" class="header" display="flex">
       <div>
-        <p>陶重霄的个人博客管理系统</p>
+        <p>皂白的博客管理系统</p>
         <el-dropdown>
         <span class="el-dropdown-link">
          {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -39,7 +39,7 @@
               <i class="el-icon-menu"></i>
               <span slot="title">用户管理</span>
             </el-menu-item>
-            <el-menu-item index="3">
+            <el-menu-item index="/admin/subscribe">
               <i class="el-icon-setting"></i>
               <span slot="title">订阅管理</span>
             </el-menu-item>
@@ -50,7 +50,7 @@
         <el-main>
           <router-view></router-view>
         </el-main>
-        <el-footer height="30px">2021/2/3 update</el-footer>
+        <el-footer height="30px">2021/2/19 update</el-footer>
       </el-container>
     </el-container>
   </div>

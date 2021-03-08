@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
   // 页码对应的数据查询开始位置
   let start = (page - 1) * pagesize
   // 将用户信息从数据库中查询出来
-  let Articles = await Article.find({})
+  let Articles = await Article.find({}, 'cate title class date featured')
     .limit(pagesize * 1)
     .skip(start)
     .sort([['date', 1]])

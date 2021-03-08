@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import VueQuillEditor from 'vue-quill-editor'
-import 'quill/dist/quill.core.css' // import styles
-import 'quill/dist/quill.snow.css' // for snow theme
-import 'quill/dist/quill.bubble.css' // for bubble theme
 
 import {
   Container,
@@ -82,30 +79,3 @@ Vue.use(CarouselItem)
 Vue.use(VueQuillEditor)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
-
-// const CryptoJS = require('crypto-js') // 引用AES源码js
-
-// function encrypt(word, keyStr) {
-//   // keyStr = keyStr ? keyStr : 'ABGHNJHGSHUYG12'
-//   let key = CryptoJS.enc.Utf8.parse(keyStr)
-//   let srcs = CryptoJS.enc.Utf8.parse(word)
-//   let encrypted = CryptoJS.AES.encrypt(srcs, key, {
-//     mode: CryptoJS.mode.ECB,
-//     padding: CryptoJS.pad.Pkcs7
-//   })
-//   return encrypted.toString()
-// }
-
-// function decrypt(word, keyStr) {
-//   // keyStr = keyStr ? keyStr : 'ABGHNJHGSHUYG12'
-//   const key = CryptoJS.enc.Utf8.parse(keyStr)
-//   const decrypt = CryptoJS.AES.decrypt(word, key, {
-//     mode: CryptoJS.mode.ECB,
-//     padding: CryptoJS.pad.Pkcs7
-//   })
-//   return CryptoJS.enc.Utf8.stringify(decrypt).toString()
-// }
-
-// export default {
-//   decrypt
-// }

@@ -213,35 +213,30 @@ export default {
       const { data: res } = await this.$http.get('admin/articles', {
         params: this.queryInfo
       })
-      console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('获取文章列表失败！')
       }
       this.articlelist = res.data.Articles
-      // console.log(this.articlelist[0].featured)
       this.total = res.data.count
     },
     // 监听 pagesize 改变的事件
     handleSizeChange(newSize) {
-      // console.log(newSize)
       this.queryInfo.pagesize = newSize
       this.getArticleList()
     },
     // 监听 页码值 改变的事件
     handleCurrentChange(newPage) {
-      console.log(newPage)
       this.queryInfo.pagenum = newPage
       this.getArticleList()
     },
     // 监听 switch 开关状态的改变
     async articleStateChanged(articleInfo) {
-      console.log(articleInfo)
       const { data: res } = await this.$http.get('/admin/articles-feature-update', { params: { featured: !!articleInfo.featured, id: articleInfo._id } })
       if (res.meta.status !== 200) {
         articleInfo.featured = !articleInfo.featured
         return this.$message.error('更新用户状态失败！')
       }
-      this.$message.success('更新用户状态成功！')
+      this.$message.success('已更新精选状态！')
       this.getArticleList()
     },
     // 修改文章信息并提交
@@ -260,10 +255,6 @@ export default {
           type: 'warning'
         }
       ).catch(err => err)
-
-      // 如果用户确认删除，则返回值为字符串 confirm
-      // 如果用户取消了删除，则返回值为字符串 cancel
-      // console.log(confirmResult)
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消删除')
       }
