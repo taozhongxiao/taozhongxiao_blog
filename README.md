@@ -9,7 +9,7 @@
 
 ![image](https://user-images.githubusercontent.com/69794676/110361596-33017b80-807b-11eb-81a2-97f413067eef.png)
 
-![Uploading image.png…]()
+![image](https://user-images.githubusercontent.com/69794676/110361718-5a584880-807b-11eb-8df8-402010e42607.png)
 
 
 ## 后台管理
